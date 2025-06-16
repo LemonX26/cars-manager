@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj ogłoszenie</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h1 class="text-center mb-4">📝 Dodaj nowe ogłoszenie</h1>
+
+    <form th:action="@{/cars/sales/create}" th:object="${carSaleAnnouncement}" method="post" class="card p-4 shadow" novalidate>
+        <fieldset class="mb-4">
+            <legend class="h5">Dane samochodu</legend>
+
+            <div class="mb-3">
+                <label class="form-label">Marka</label>
+                <select th:field="*{car.name}" class="form-select" required>
+                    <option value="" disabled selected>-- Wybierz markę --</option>
+                    <option th:each="n : ${names}" th:value="${n}" th:text="${n}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Model</label>
+                <select th:field="*{car.model}" class="form-select" required>
+                    <option value="" disabled selected>-- Wybierz model --</option>
+                    <option th:each="m : ${models}" th:value="${m}" th:text="${m}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Kategoria</label>
+                <select th:field="*{car.category}" class="form-select" required>
+                    <option value="" disabled selected>-- Wybierz kategorię --</option>
+                    <option th:each="c : ${categories}" th:value="${c}" th:text="${c}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Rok produkcji</label>
+                <input type="number" th:field="*{car.productionYear}" class="form-control" required min="1900" max="2099" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Przebieg (km)</label>
+                <input type="number" th:field="*{car.mileage}" class="form-control" required min="0" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Kraj pochodzenia</label>
+                <input type="text" th:field="*{car.originCountry}" class="form-control" placeholder="np. Japonia" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select th:field="*{car.status}" class="form-select" required>
+                    <option value="" disabled selected>-- Wybierz status --</option>
+                    <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-4">
+            <legend class="h5">Szczegóły ogłoszenia</legend>
+
+            <div class="mb-3">
+                <label class="form-label">Cena (PLN)</label>
+                <input type="number" step="1000" min="0" th:field="*{price}" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Opis</label>
+                <textarea th:field="*{description}" class="form-control" required placeholder="Opisz stan auta, wyposażenie, itp."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Dane kontaktowe</label>
+                <input type="text" th:field="*{contactInfo}" class="form-control" required placeholder="np. email lub telefon" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">URL zdjęcia</label>
+                <input type="url" th:field="*{imageUrl}" class="form-control" required placeholder="np. http://example.com/car.jpg" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Lokalizacja</label>
+                <input type="text" th:field="*{location}" class="form-control" required placeholder="np. Kraków" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Imię sprzedającego</label>
+                <input type="text" th:field="*{sellerName}" class="form-control" required />
+            </div>
+        </fieldset>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">✅ Dodaj ogłoszenie</button>
+            <a href="/cars" class="btn btn-secondary">Anuluj</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

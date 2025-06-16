@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ogłoszenia</title>
+</head>
+<body>
+<h1>Lista ogłoszeń</h1>
+<table>
+    <tr>
+        <th>Marka</th>
+        <th>Model</th>
+        <th>Cena</th>
+        <th>Opis</th>
+    </tr>
+    <tr th:each="ann : ${announcements}">
+        <td th:text="${ann.car.name}">Marka</td>
+        <td th:text="${ann.car.model}">Model</td>
+        <td th:text="${ann.price}">Cena</td>
+        <td th:text="${ann.description}">Opis</td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Samochodów</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h1 class="text-center mb-4">🚗OTOSROTO🚗</h1>
+
+    <!-- Przycisk sortowania -->
+
+    <!-- Formularz filtrowania -->
+    <div class="card p-3 mb-4">
+
+        <h2 class="h4 mb-3">🔍 Filtrowanie Samochodów</h2>
+        <form th:action="@{/cars/filters}" method="get" class="row g-3">
+            <!-- Marka -->
+            <div class="col-md-4">
+                <label for="name" class="form-label">Marka</label>
+                <select id="name" name="name" class="form-select" onchange="this.form.submit()">
+                    <option value="" selected disabled>Wybierz markę</option>
+                    <option th:each="n : ${names}" th:value="${n}" th:selected="${n == selectedName}" th:text="${n}"></option>
+                </select>
+            </div>
+
+            <!-- Model -->
+            <div class="col-md-4">
+                <label for="model" class="form-label">Model</label>
+                <select id="model" name="model" class="form-select">
+                    <option value="" selected disabled>Wybierz model</option>
+                    <option th:each="m : ${models}" th:value="${m}" th:selected="${m == selectedModel}" th:text="${m}"></option>
+                </select>
+            </div>
+
+            <!-- Kategoria -->
+            <div class="col-md-4">
+                <label for="categories" class="form-label">Kategoria</label>
+                <select id="categories" name="categories" class="form-select">
+                    <option value="" th:selected="${categoriesValue == null}" disabled>Wybierz kategorię</option>
+                    <option th:each="c : ${categories}" th:value="${c}" th:selected="${c == categoriesValue}" th:text="${c}"></option>
+                </select>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" name="status" class="form-select">
+                    <option value="" disabled selected>Wybierz status</option>
+                    <option th:each="s : ${status}" th:value="${s}" th:text="${s}" th:selected="${s == selectedStatus}"></option>
+                </select>
+            </div>
+
+            <!-- Rok produkcji -->
+            <div class="col-md-3">
+                <label for="productionYears" class="form-label">Rok produkcji</label>
+                <select id="productionYears" name="productionYears" class="form-select">
+                    <option value="" disabled selected>Wybierz rok</option>
+                    <option th:each="year : ${#numbers.sequence(2025, 1950, -1)}"
+                            th:value="${year}"
+                            th:text="${year}"
+                            th:selected="${year == productionYearsValue}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Przebieg min -->
+            <div class="col-md-3">
+                <label for="minMileage" class="form-label">Minimalny przebieg</label>
+                <select id="minMileage" name="minMileage" class="form-select">
+                    <option value="" disabled selected>Wybierz minimalny przebieg</option>
+                    <option th:each="min : ${#numbers.sequence(0, 250000, 25000)}"
+                            th:value="${min}"
+                            th:text="${min}"
+                            th:selected="${min == minMileageValue}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Przebieg max -->
+            <div class="col-md-3">
+                <label for="maxMileage" class="form-label">Maksymalny przebieg</label>
+                <select id="maxMileage" name="maxMileage" class="form-select">
+                    <option value="" disabled selected>Wybierz maksymalny przebieg</option>
+                    <option th:each="max : ${#numbers.sequence(0, 250000, 25000)}"
+                            th:value="${max}"
+                            th:text="${max}"
+                            th:selected="${max == maxMileageValue}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Przycisk filtruj/resetuj -->
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary me-2">Filtruj</button>
+                <a href="/cars" class="btn btn-secondary">Resetuj</a>
+            </div>
+        </form>
+    </div>
+    <form th:action="@{/cars/sort}" method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label for="sortBy" class="form-label">Sortuj według</label>
+            <select id="sortBy" name="sortBy" class="form-select">
+                <option value="name">Nazwa</option>
+                <option value="model">Model</option>
+                <option value="category">Kategoria</option>
+                <option value="productionYear">Rok produkcji</option>
+                <option value="mileage">Przebieg</option>
+                <option value="status">Status</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="sortDir" class="form-label">Kierunek</label>
+            <select id="sortDir" name="sortDir" class="form-select">
+                <option value="asc">Rosnąco</option>
+                <option value="desc">Malejąco</option>
+            </select>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-outline-primary">Sortuj</button>
+        </div>
+
+        <div class="mb-4 text-end">
+            <a href="/cars/sales/create" class="btn btn-success">➕ Dodaj ogłoszenie sprzedaży</a>
+        </div>
+
+    </form>
+    <!-- Tabela samochodów -->
+    <table class="table table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Nazwa</th>
+            <th>Model</th>
+            <th>Kategoria</th>
+            <th>Rok</th>
+            <th>Przebieg</th>
+            <th>Status</th>
+            <th>Wyświetl</th>
+            <th th:if="${isAdmin}">Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="car : ${cars}">
+            <td th:text="${car.name}">Nazwa</td>
+            <td th:text="${car.model}">Model</td>
+            <td th:text="${car.category}">Kategoria</td>
+            <td th:text="${car.productionYear}">Rok</td>
+            <td th:text="${car.mileage}">Przebieg</td>
+            <td th:text="${car.status}">Status</td>
+            <td>
+                <a th:href="@{/cars/details/{id}(id=${car.id})}" class="btn btn-info btn-sm">Wyświetl</a>
+            </td>
+            <td th:if="${isAdmin}">
+                <form  th:action="@{/cars/delete/{id}(id=${car.id})}" method="post">
+                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Formularz dodawania samochodu -->
+    <div th:if="${isAdmin}">
+        <h2 class="mt-4">Dodaj Samochód</h2>
+        <form th:action="@{/cars/add}" th:object="${newCar}" method="post" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" th:field="*{name}" class="form-control" placeholder="Nazwa" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" th:field="*{model}" class="form-control" placeholder="Model" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" th:field="*{category}" class="form-control" placeholder="Kategoria" required>
+            </div>
+            <div class="col-md-3">
+                <input type="number" th:field="*{productionYear}" class="form-control" placeholder="Rok" required>
+            </div>
+            <div class="col-md-3">
+                <input type="number" th:field="*{mileage}" class="form-control" placeholder="Przebieg" required>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Szczegóły Samochodu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h1 class="text-center mb-4">🚘 Szczegóły Samochodu</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title" th:text="${car.name} + ' ' + ${car.model}">Marka i Model</h3>
+
+            <ul class="list-group list-group-flush mt-3">
+                <li class="list-group-item"><strong>Marka:</strong> <span th:text="${names}">Nazwa</span></li>
+                <li class="list-group-item"><strong>Model:</strong> <span th:text="${models}">Model</span></li>
+                <li class="list-group-item"><strong>Kategoria:</strong> <span th:text="${categories}">Kategoria</span></li>
+                <li class="list-group-item"><strong>Rok Produkcji:</strong> <span th:text="${years}">Rok</span></li>
+                <li class="list-group-item"><strong>Przebieg:</strong> <span th:text="${mileages}">Przebieg</span> km</li>
+                <li class="list-group-item"><strong>Status:</strong> <span th:text="${status}">Status</span></li>
+
+            </ul>
+
+            <a href="/cars" class="btn btn-secondary mt-4">🔙 Powrót do listy</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

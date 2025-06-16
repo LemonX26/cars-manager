@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Wyszukiwanie Taska</title>
+</head>
+<body>
+
+<h1>Wyszukaj Taska</h1>
+
+<!-- Formularz do wyszukiwania taska po nazwie -->
+<form action="#" th:action="@{/tasks/search}" method="get">
+    <label for="title">Nazwa Taska:</label>
+    <input type="text" id="title" name="title" required />
+    <button type="submit">Szukaj</button>
+</form>
+
+<!-- Jeśli task zostanie znaleziony -->
+<div th:if="${task != null}">
+    <h2>Opis:</h2>
+    <p th:text="${task.description}">Brak opisu</p>
+</div>
+
+<!-- Jeśli task nie zostanie znaleziony -->
+<div th:if="${notFound}">
+    <p style="color: red;">Nie znaleziono taska o podanej nazwie.</p>
+</div>
+
+</body>
+</html>

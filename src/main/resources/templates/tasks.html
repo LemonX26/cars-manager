@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista zadań</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<h1>Moje zadania</h1>
+<div class="container mt-5">
+
+    <!-- Lista tasków -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li th:each="task : ${tasks}" class="list-group-item d-flex justify-content-between align-items-center">
+                    <span th:text="${task.description}"></span>
+                    <span th:text="${task.title}"></span>
+                    <form th:action="@{/tasks/delete/{taskId}(taskId=${task.id})}" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                    </form>
+                </li>
+            </ul>
+            <p th:if="${#lists.isEmpty(tasks)}">Brak zadań! </p>
+            <h2 class="mb-4 text-center">📋 Dodaj Nowe Zadania</h2>
+
+            <!-- Formularz dodawania taska -->
+            <form th:action="@{/tasks/add}" th:object="${newTask}" method="post" class="input-group mb-4">
+                <label>Tytul  <input type="text" th:field="*{title}" name="title" class="form-control" placeholder="Dodaj nowe zadanie..." required></label>
+                <label>Opis  <input type="text" th:field="*{description}"name="title" class="form-control" placeholder="Dodaj nowy opis" required></label>
+                <button type="submit" class="btn btn-primary">Dodaj zadanie </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
