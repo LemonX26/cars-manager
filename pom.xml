@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com</groupId>
-	<artifactId>task-manager</artifactId>
+	<artifactId>CarManager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Task Menager</name>
+	<name>Car Menager</name>
 	<description>Short menager description</description>
 	<url/>
 	<licenses>
